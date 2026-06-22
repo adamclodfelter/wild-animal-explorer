@@ -727,7 +727,7 @@ function AnimalExplorer() {
       setAnimalImages([]);
       setImageIndex(0);
 
-      const BAD_KEYWORDS = ["map", "range", "distribution", "iucn", "status", "conservation", "icon", "logo", "flag", "diagram", "chart", "graph", "taxonomy", "cladogram", "silhouette", "symbol", "sign", "button", "stamp", "coin", "extinct", "threatened"];
+      const BAD_KEYWORDS = ["map", "range", "distribution", "iucn", "status", "conservation", "icon", "logo", "flag", "diagram", "chart", "graph", "taxonomy", "cladogram", "silhouette", "symbol", "sign", "button", "stamp", "coin", "extinct", "threatened", "skull", "skeleton", "fossil", "museum"];
 
       function isBadImage(title) {
         if (!title) return false;
@@ -735,38 +735,42 @@ function AnimalExplorer() {
         return BAD_KEYWORDS.some(k => t.includes(k));
       }
 
-      // Step 1: get main Wikipedia image
-      const summaryRes = await fetch(
-        `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(animalName)}`
-      );
-      const summaryData = await summaryRes.json();
-      const mainImg = summaryData?.originalimage?.source || summaryData?.thumbnail?.source || null;
+      const imgs = [];
 
-      // Step 2: get additional images from Wikipedia media list, strictly filtered
-      const mediaRes = await fetch(
-        `https://en.wikipedia.org/api/rest_v1/page/media-list/${encodeURIComponent(animalName)}`
-      );
-      const mediaData = await mediaRes.json();
-      const extras = (mediaData?.items || [])
-        .filter(item => {
-          if (item.type !== "image") return false;
-          if (!item.srcset || item.srcset.length === 0) return false;
-          if (isBadImage(item.title)) return false;
-          // Must be a photo not an illustration/diagram - check file extension
-          const title = (item.title || "").toLowerCase();
-          if (!title.endsWith(".jpg") && !title.endsWith(".jpeg") && !title.endsWith(".png")) return false;
-          return true;
-        })
-        .map(item => {
-          const best = item.srcset.sort((a,b) => (b.width||0)-(a.width||0))[0];
-          return best ? "https:" + best.src : null;
-        })
-        .filter(Boolean)
-        .filter(url => url !== mainImg);
+      // Source 1: Wikipedia summary — best single representative photo
+      try {
+        const summaryRes = await fetch(
+          `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(animalName)}`
+        );
+        const summaryData = await summaryRes.json();
+        const mainImg = summaryData?.originalimage?.source || summaryData?.thumbnail?.source || null;
+        if (mainImg && !isBadImage(mainImg)) imgs.push(mainImg);
+      } catch(e) {}
 
-      const imgs = mainImg ? [mainImg, ...extras].slice(0, 3) : extras.slice(0, 3);
+      // Source 2: iNaturalist — pure wildlife photography, no charts ever
+      try {
+        const inatRes = await fetch(
+          `https://api.inaturalist.org/v1/taxa?q=${encodeURIComponent(animalName)}&per_page=1&rank=species`
+        );
+        const inatData = await inatRes.json();
+        const taxon = inatData?.results?.[0];
+        if (taxon) {
+          // Get observations with photos for this taxon
+          const obsRes = await fetch(
+            `https://api.inaturalist.org/v1/observations?taxon_id=${taxon.id}&per_page=6&order=votes&order_by=votes&photos=true&quality_grade=research`
+          );
+          const obsData = await obsRes.json();
+          const inatImgs = (obsData?.results || [])
+            .flatMap(obs => obs.photos || [])
+            .map(p => p.url?.replace("square", "medium"))
+            .filter(Boolean)
+            .filter(url => !imgs.includes(url))
+            .slice(0, 2);
+          imgs.push(...inatImgs);
+        }
+      } catch(e) {}
 
-      setAnimalImages(imgs);
+      setAnimalImages(imgs.slice(0, 3));
     } catch(e) {
       setAnimalImages([]);
     }
