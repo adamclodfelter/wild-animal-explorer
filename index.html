@@ -720,6 +720,15 @@ function AnimalExplorer() {
   const [animalImages, setAnimalImages] = React.useState([]);
   const [imageIndex, setImageIndex] = React.useState(0);
   const [imageLoading, setImageLoading] = React.useState(false);
+  const [reportCopied, setReportCopied] = React.useState(false);
+
+  function reportBadPhoto() {
+    const msg = `Bad photo: ${animal?.name} - photo ${imageIndex + 1} of ${animalImages.length} - URL: ${animalImages[imageIndex]}`;
+    navigator.clipboard.writeText(msg).then(() => {
+      setReportCopied(true);
+      setTimeout(() => setReportCopied(false), 2500);
+    });
+  }
 
   async function fetchWikipediaImages(animalName) {
     try {
@@ -888,6 +897,9 @@ function AnimalExplorer() {
                               <div key={i} onClick={() => setImageIndex(i)} style={{ width: "8px", height: "8px", borderRadius: "50%", background: i === imageIndex ? "white" : "rgba(255,255,255,0.5)", cursor: "pointer", boxShadow: "0 1px 3px rgba(0,0,0,0.3)" }} />
                             ))}
                           </div>
+                          <button onClick={reportBadPhoto} style={{ position: "absolute", top: "8px", right: "8px", background: "rgba(255,255,255,0.85)", border: "none", borderRadius: "20px", padding: "4px 10px", fontSize: "11px", fontWeight: 800, cursor: "pointer", color: reportCopied ? "#00B894" : "#E17055" }}>
+                            {reportCopied ? "✓ Copied!" : "🚩 Bad photo"}
+                          </button>
                         </>
                       )}
                     </>
