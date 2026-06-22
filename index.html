@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wild Animal Explorer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', 'Arial Rounded MT Bold', Arial, sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+const ANIMALS = [
+  {
+    name: "Axolotl", emoji: "🦎", color: "#FF6B9D", nickname: "the zombie lizard",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=19.4,-99.1&zoom=7&size=400x200&maptype=mapnik",
+    image: "https://picsum.photos/seed/axolotl/640/220",
+    superPower: "It can regrow its entire legs, heart, and even parts of its brain! 🤯",
+    funFacts: ["Axolotls never really grow up — they stay in their baby water form their whole lives!", "Scientists study axolotls to learn how to help humans regrow body parts someday! 🔬", "Wild axolotls are critically endangered — there are more in pet tanks than in the wild! 😮"],
+    whereItLives: "Lakes near Mexico City in Mexico 🇲🇽",
+    whatItEats: "Worms, small fish, and little water bugs 🐛",
+    sound: "Mostly silent — it's a sneaky swimmer! 🤫",
+  },
+  {
+    name: "Quokka", emoji: "🐾", color: "#FF9F43", nickname: "the happiest animal",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-31.9,115.5&zoom=9&size=400x200&maptype=mapnik",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Quokka_at_Rottnest_Island.jpg/640px-Quokka_at_Rottnest_Island.jpg",
+    superPower: "Its face is always shaped into a big smile — it literally looks happy 24/7! 😁",
+    funFacts: ["Quokkas are so friendly they'll walk right up to you for a selfie!", "Baby quokkas are called joeys and live in their mom's pouch — just like kangaroos! 🦘", "Quokkas can go months without drinking water — they get moisture from plants! 🌿"],
+    whereItLives: "A small island called Rottnest Island in Australia 🇦🇺",
+    whatItEats: "Leaves, grass, and plants 🌿",
+    sound: "Soft grunts and squeaks 🐾",
+  },
+  {
+    name: "Pangolin", emoji: "🦔", color: "#A29BFE", nickname: "the walking pinecone",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=5.0,20.0&zoom=3&size=400x200&maptype=mapnik",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Pangolin_Hardap.jpg/640px-Pangolin_Hardap.jpg",
+    superPower: "It rolls into a perfect armored ball when scared — nothing can crack it open! 🔮",
+    funFacts: ["A pangolin's tongue is longer than its whole body!", "Pangolins are the most trafficked mammals on Earth — people need to protect them! 🙏", "Baby pangolins ride on their mom's tail when they travel — the cutest taxi ever! 🚕"],
+    whereItLives: "Forests and grasslands in Africa and Asia 🌍",
+    whatItEats: "Ants and termites — thousands every single day! 🐜",
+    sound: "Hisses and puffs when nervous 💨",
+  },
+  {
+    name: "Narwhal", emoji: "🦄", color: "#81ECEC", nickname: "the unicorn of the sea",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=75.0,-70.0&zoom=3&size=400x200&maptype=mapnik",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Narwhal_Enchanted_Naturalist.jpg/640px-Narwhal_Enchanted_Naturalist.jpg",
+    superPower: "Its giant spiral tusk is actually a tooth that can sense temperature and salt in the water! 🌊",
+    funFacts: ["Narwhals can dive deeper than 5,000 feet — deeper than most submarines!", "The narwhal's tusk can grow up to 10 feet long — that's taller than most ceilings! 📏", "Groups of narwhals are called a blessing — because seeing one really is lucky! 🍀"],
+    whereItLives: "Icy Arctic oceans near Canada and Greenland ❄️",
+    whatItEats: "Fish, squid, and shrimp 🦑",
+    sound: "Clicks, whistles, and knocking sounds underwater 🔊",
+  },
+  {
+    name: "Shoebill Stork", emoji: "🦅", color: "#E17055", nickname: "the dinosaur bird",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=1.0,32.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Shoebill_Stork_2_%286963068155%29.jpg/640px-Shoebill_Stork_2_%286963068155%29.jpg",
+    superPower: "Its giant shoe-shaped beak can snap up a whole lungfish in one bite! 👟",
+    funFacts: ["Shoebills can stand perfectly still for hours — like a statue waiting for fish!", "Shoebill storks bow to each other as a greeting — very polite birds! 🎩", "They sometimes cool their eggs by pouring water on them from their beak! 💧"],
+    whereItLives: "Swamps in East Africa 🌿",
+    whatItEats: "Big fish, frogs, and even baby crocodiles! 🐊",
+    sound: "Claps its huge beak together like a machine gun — clack clack clack! 💥",
+  },
+  {
+    name: "Kakapo", emoji: "🦜", color: "#BADC58", nickname: "the chonky night parrot",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-46.9,168.1&zoom=7&size=400x200&maptype=mapnik",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Kakapo_Sirocco.jpg/640px-Kakapo_Sirocco.jpg",
+    superPower: "It's the world's heaviest parrot and the only one that can't fly — but it loves to climb! 🌳",
+    funFacts: ["Kakapos can live to be 100 years old — older than most people!", "There are fewer than 250 kakapos left in the world — every single one has a name! 💛", "A kakapo named Sirocco became so famous he got his own Twitter account! 🐦"],
+    whereItLives: "Special protected islands in New Zealand 🇳🇿",
+    whatItEats: "Fruits, seeds, and plants 🍎",
+    sound: "Makes a deep booming sound at night to call friends 🔔",
+  },
+  {
+    name: "Mantis Shrimp", emoji: "🦐", color: "#FF7675", nickname: "the punch machine",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-8.0,115.0&zoom=6&size=400x200&maptype=mapnik",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Odontodactylus_scyllarus.jpg/640px-Odontodactylus_scyllarus.jpg",
+    superPower: "It punches with the speed of a bullet and can break aquarium glass! 💪",
+    funFacts: ["Mantis shrimp can see 16 types of color — humans can only see 3!", "They punch so fast the water around their claw boils for a split second! 💥", "Mantis shrimp can recognize each other's faces — they have better memory than most fish! 🧠"],
+    whereItLives: "Warm shallow oceans, especially near coral reefs 🪸",
+    whatItEats: "Crabs, clams, and other sea creatures it punches open 🦀",
+    sound: "Clicks and rattles its shell 🎶",
+  },
+  {
+    name: "Leafy Sea Dragon", emoji: "🐉", color: "#00CEC9", nickname: "the ocean plant dragon",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-35.0,138.0&zoom=6&size=400x200&maptype=mapnik",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Leafy_sea_dragon_at_Monterey_Bay_Aquarium_1.jpg/640px-Leafy_sea_dragon_at_Monterey_Bay_Aquarium_1.jpg",
+    superPower: "It looks exactly like floating seaweed — one of the best disguises in the ocean! 🌊",
+    funFacts: ["The daddy sea dragon carries all the eggs and gives birth to the babies!", "Leafy sea dragons can't be kept in most aquariums — they're too delicate and rare! 🌊", "They have no teeth or stomach — they just suck up tiny shrimp all day long! 😋"],
+    whereItLives: "Coastal waters of southern Australia 🇦🇺",
+    whatItEats: "Tiny shrimp and plankton it sucks up like a vacuum 🌀",
+    sound: "Totally silent — stealth mode always on 🤫",
+  },
+  {
+    name: "Aye-Aye", emoji: "🐒", color: "#00B894", nickname: "the finger tapper",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-19.0,47.0&zoom=6&size=400x200&maptype=mapnik",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Aye-aye_%28Daubentonia_madagascariensis%29.jpg/640px-Aye-aye_%28Daubentonia_madagascariensis%29.jpg",
+    superPower: "It has one super long bony finger it uses to tap on trees and fish out bugs — like built-in chopsticks! 🥢",
+    funFacts: ["Aye-ayes are the only primates that use echolocation — like bats!", "In Madagascar, some people think aye-ayes are bad luck — but they're totally harmless! 🤞", "An aye-aye's middle finger is three times longer than its other fingers! ☝️"],
+    whereItLives: "Rainforests on the island of Madagascar 🌴",
+    whatItEats: "Grubs, nuts, and fruit it digs out with its special finger 🐛",
+    sound: "Loud eerie calls at night that scared old legends! 👻",
+  },
+  {
+    name: "Blobfish", emoji: "🐡", color: "#74B9FF", nickname: "the grumpy blob",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-33.0,151.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Psychrolutes_marcidus.jpg/640px-Psychrolutes_marcidus.jpg",
+    superPower: "It survives crushing deep-sea pressure that would squash most creatures flat! 💪",
+    funFacts: ["Blobfish actually look totally normal underwater — they only get blobby when brought to the surface!", "The blobfish was voted the world's ugliest animal in 2013 — it became instantly famous! 😂", "Blobfish don't really swim — they just float just above the ocean floor waiting for food! 😴"],
+    whereItLives: "Deep ocean waters off Australia and New Zealand 🌊",
+    whatItEats: "Whatever drifts into its mouth — it's a very lazy eater 😴",
+    sound: "No one knows — it's never been heard! 🔇",
+  },
+  {
+    name: "Star-nosed Mole", emoji: "🦡", color: "#7ED6DF", nickname: "the star face detective",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=43.0,-79.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Condylura_cristata.jpg/640px-Condylura_cristata.jpg",
+    superPower: "Its 22 pink tentacles on its nose can feel things faster than your eyes can see! ⭐",
+    funFacts: ["It's the fastest-eating animal on Earth — it figures out if food is edible in 8 milliseconds!", "The star-nosed mole can smell underwater by blowing bubbles and sniffing them back up! 🫧", "Its 22 nose tentacles have more touch sensors than a human hand! 🤯"],
+    whereItLives: "Wet swampy areas in eastern North America 🇺🇸",
+    whatItEats: "Worms, insects, and tiny fish underground 🪱",
+    sound: "Soft squeaks as it digs 🐾",
+  },
+  {
+    name: "Dumbo Octopus", emoji: "🐙", color: "#FDCB6E", nickname: "the deep sea flapper",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=0.0,-140.0&zoom=3&size=400x200&maptype=mapnik",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Grimpoteuthis_boylei.jpg/640px-Grimpoteuthis_boylei.jpg",
+    superPower: "It has ear-like fins it flaps to swim — just like Dumbo the elephant! 🐘",
+    funFacts: ["It lives deeper in the ocean than almost any other octopus — in total darkness!", "Dumbo octopuses were only discovered recently — there's still so much we don't know! 🔍", "They don't have an ink sac like other octopuses — no need when you live that deep! 🌑"],
+    whereItLives: "The very deep ocean all around the world 🌊",
+    whatItEats: "Worms and tiny sea creatures it finds on the ocean floor 🪱",
+    sound: "Silent — sound doesn't work well in the deep ocean 🤫",
+  },
+
+  {
+    name: "Fossa", emoji: "🐆", color: "#6C5CE7", nickname: "the cat-dog of Madagascar",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-20.0,44.0&zoom=6&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It can climb trees headfirst going down — like it has sticky paws! 🌳",
+    funFacts: ["The fossa is related to the mongoose but looks exactly like a tiny puma!", "Fossas are the top predator in Madagascar — nothing hunts them! 👑", "Baby fossas are born with their eyes closed and don't open them for 2–3 weeks! 😴"],
+    whereItLives: "Forests of Madagascar 🌴",
+    whatItEats: "Lemurs, birds, and lizards 🦎",
+    sound: "Growls and purrs like a cat 🐱",
+  },
+  {
+    name: "Saiga Antelope", emoji: "🦌", color: "#FD79A8", nickname: "the big nose runner",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=48.0,60.0&zoom=4&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "Its huge droopy nose filters dust and warms cold air before it hits its lungs! 👃",
+    funFacts: ["Saiga antelopes can run 80 miles per hour to escape predators!", "In 2015 over 200,000 saiga antelopes died in just three weeks from a mysterious disease — scientists were shocked! 😢", "Their population has recovered thanks to conservation efforts — a rare good news story! 🌟"],
+    whereItLives: "Grasslands of Central Asia 🌾",
+    whatItEats: "Grass, herbs, and shrubs 🌿",
+    sound: "Bleats like a sheep 🐑",
+  },
+  {
+    name: "Tardigrade", emoji: "🦠", color: "#FAB1A0", nickname: "the water bear",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=0.0,0.0&zoom=2&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It can survive in outer space, volcanos, and being completely frozen — it's nearly indestructible! 🚀",
+    funFacts: ["Tardigrades are so tiny you need a microscope to see them, but they're one of the toughest animals ever!", "Tardigrades have survived five mass extinctions — they outlived the dinosaurs! 🦕", "NASA sent tardigrades to the International Space Station and they survived just fine! 🚀"],
+    whereItLives: "Everywhere on Earth — even Antarctica and the top of mountains 🌍",
+    whatItEats: "Tiny plants and bacteria 🌱",
+    sound: "Too tiny to make any sound! 🤫",
+  },
+  {
+    name: "Sun Bear", emoji: "🐻", color: "#FDCB6E", nickname: "the honey bear",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=4.0,117.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It has the longest tongue of any bear — perfect for scooping honey out of beehives! 🍯",
+    funFacts: ["Sun bears have a golden patch on their chest shaped like the rising sun!", "Sun bears have the longest tongue of any bear — up to 10 inches long! 👅", "They use their long claws to rip open beehives then lick out all the honey! 🍯"],
+    whereItLives: "Rainforests of Southeast Asia 🌴",
+    whatItEats: "Honey, insects, fruit, and small animals 🍯",
+    sound: "Barks, whimpers, and shrieks loudly when scared 😱",
+  },
+  {
+    name: "Proboscis Monkey", emoji: "🐵", color: "#6AB04C", nickname: "the big nose monkey",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=1.0,114.0&zoom=6&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "Its giant nose acts like a loudspeaker to make its calls extra loud! 📢",
+    funFacts: ["Male proboscis monkeys have such big noses they have to push them aside just to eat!", "Proboscis monkeys are excellent swimmers — they even dive into rivers to escape predators! 🏊", "Baby proboscis monkeys are born with bright blue faces that turn normal color as they grow! 💙"],
+    whereItLives: "Mangrove forests of Borneo 🌴",
+    whatItEats: "Leaves, seeds, and unripe fruit 🍃",
+    sound: "Loud honking calls through its giant nose 📯",
+  },
+  {
+    name: "Peacock Mantis Shrimp", emoji: "🌈", color: "#E84393", nickname: "the rainbow puncher",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-5.0,120.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It sees more colors than any other animal on Earth — the world looks like a fireworks show to it! 🎆",
+    funFacts: ["Its punch is so fast it creates a flash of light and a tiny explosion underwater!", "Peacock mantis shrimp are monogamous — they find a partner and stay together for life! 💕", "Their eyes move independently so each eye can look at something totally different! 👀"],
+    whereItLives: "Coral reefs in the Indian and Pacific Oceans 🪸",
+    whatItEats: "Crabs, clams, and snails it smashes open 🦀",
+    sound: "Rumbles and growls underwater 🔊",
+  },
+  {
+    name: "Gerenuk", emoji: "🦒", color: "#E17055", nickname: "the giraffe gazelle",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=2.0,40.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It can stand straight up on its back legs to reach leaves way up high — like a tiny giraffe! 🌿",
+    funFacts: ["Gerenuks never need to drink water — they get all their moisture from plants!", "The gerenuk's neck is so long some people call it the giraffe gazelle — and it acts like one too! 🦒", "Male gerenuks have horns but females don't — you can always tell them apart! 🦌"],
+    whereItLives: "Dry bushlands of East Africa 🌍",
+    whatItEats: "Leaves and flowers from tall thorny bushes 🌸",
+    sound: "Soft buzzing and bleating sounds 🐑",
+  },
+  {
+    name: "Irrawaddy Dolphin", emoji: "🐬", color: "#74B9FF", nickname: "the spitball dolphin",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=16.0,97.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It spits jets of water to herd fish — it's basically a living squirt gun! 💦",
+    funFacts: ["Irrawaddy dolphins have a round head with no beak, making them look like they're always smiling!", "They work with fishermen in Myanmar — herding fish into nets in exchange for some of the catch! 🤝", "Irrawaddy dolphins can spit water up to 5 feet to herd fish! 💦"],
+    whereItLives: "Rivers and coasts of Southeast Asia 🌊",
+    whatItEats: "Fish, squid, and shrimp 🐟",
+    sound: "Clicks and high-pitched squeaks 🎵",
+  },
+  {
+    name: "Patagonian Mara", emoji: "🐇", color: "#B2BEC3", nickname: "the rabbit deer",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-40.0,-68.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It can sprint at 45 miles per hour and leap huge distances like a tiny deer! 🦌",
+    funFacts: ["Maras mate for life and stay together as a couple forever — super romantic! 💕", "Baby maras can run within minutes of being born — no lazy start for these guys! 🏃", "Maras look like a rabbit and a small deer had a baby — nature gets creative! 😄"],
+    whereItLives: "Open grasslands of Argentina in South America 🌾",
+    whatItEats: "Grass, cacti, and other plants 🌵",
+    sound: "Grunts and squeals 🐷",
+  },
+  {
+    name: "Naked Mole Rat", emoji: "🐀", color: "#DFE6E9", nickname: "the underground queen",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=0.0,37.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It feels no pain and almost never gets cancer — scientists study it to help humans! 🔬",
+    funFacts: ["Naked mole rats live like ants with a queen who is the only one that has babies!", "They can run backwards as fast as they run forwards — a very useful skill underground! 🔄", "Naked mole rats feel almost no pain — scientists study them to help treat human pain! 💊"],
+    whereItLives: "Underground tunnels in East Africa 🌍",
+    whatItEats: "Roots and tubers it digs up underground 🥔",
+    sound: "Soft chirping and tweeting — like a tiny bird! 🐦",
+  },
+  {
+    name: "Glass Frog", emoji: "🐸", color: "#55EFC4", nickname: "the see-through frog",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=4.0,-74.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "Its belly is completely see-through — you can watch its heart beating right through its skin! ❤️",
+    funFacts: ["Glass frogs are so tiny they can sit on your fingernail!", "Male glass frogs guard their eggs every night until they hatch — great dads! 👨‍👧", "You can watch a glass frog's heart beat right through its transparent skin! ❤️"],
+    whereItLives: "Rainforests of Central and South America 🌿",
+    whatItEats: "Tiny insects and spiders 🕷️",
+    sound: "High-pitched peeping whistles at night 🎵",
+  },
+  {
+    name: "Wolverine", emoji: "🦡", color: "#636E72", nickname: "the tiny grizzly",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=65.0,25.0&zoom=4&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It can take down animals 10 times its size and has a bite strong enough to crush frozen bones! 💀",
+    funFacts: ["Wolverines travel up to 15 miles every single day through deep snow without getting tired!", "A wolverine once chased a black bear away from its food — it fears nothing! 😤", "Wolverines have a special tooth in the back of their mouth rotated 90 degrees just for ripping frozen meat! 🦷"],
+    whereItLives: "Frozen forests and mountains of the Arctic 🏔️",
+    whatItEats: "Deer, rabbits, and whatever it can find — it never gives up on a meal! 🍖",
+    sound: "Loud growls, screams, and hisses 😤",
+  },
+  {
+    name: "Blue-footed Booby", emoji: "🐦", color: "#0984E3", nickname: "the fancy feet dancer",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-0.5,-90.0&zoom=7&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It dive-bombs into the ocean at 60 miles per hour to catch fish — like a feathered torpedo! 🎯",
+    funFacts: ["Male blue-footed boobies do a special dance showing off their bright blue feet to impress a mate!", "The bluer the feet, the healthier the bird — females always pick the bluest feet! 💙", "Booby chicks are born pure white and fluffy — their blue feet develop as they grow! 🐣"],
+    whereItLives: "Pacific Ocean islands, especially the Galapagos 🏝️",
+    whatItEats: "Fish it catches by diving headfirst into the ocean 🐟",
+    sound: "Males whistle, females honk loudly 📯",
+  },
+  {
+    name: "Platypus", emoji: "🦆", color: "#00B894", nickname: "the impossible animal",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-27.0,153.0&zoom=6&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It can sense electricity from other animals through its bill — like having a superpower detector! ⚡",
+    funFacts: ["When scientists first saw a platypus they thought someone was playing a prank!", "Male platypuses have venomous spurs on their back legs — one of the few venomous mammals! ☠️", "Platypuses don't have stomachs — food goes straight from their esophagus to their intestines! 🤯"],
+    whereItLives: "Rivers and streams of eastern Australia 🇦🇺",
+    whatItEats: "Worms, insects, and shellfish it finds underwater 🪱",
+    sound: "Soft growling sounds — surprisingly cute! 🥰",
+  },
+  {
+    name: "Olm", emoji: "🦎", color: "#A29BFE", nickname: "the cave dragon",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=43.5,16.5&zoom=7&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It can go 10 years without eating any food at all — the ultimate fasting champion! 🏆",
+    funFacts: ["Olms live in total darkness their whole lives and can survive for 100 years!", "Olms were once thought to be baby dragons by people who found them washed out of caves! 🐉", "An olm can go 10 years without eating a single thing and still survive! ⏳"],
+    whereItLives: "Underground caves in southern Europe 🏔️",
+    whatItEats: "Tiny crabs and snails when it can find them 🦀",
+    sound: "Completely silent — a true cave ghost 👻",
+  },
+  {
+    name: "Tibetan Fox", emoji: "🦊", color: "#FD79A8", nickname: "the judgy face fox",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=32.0,90.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "Its square-shaped face looks permanently unimpressed — perfect poker face! 😑",
+    funFacts: ["The Tibetan fox has the most hilariously grumpy expression of any animal on Earth!", "They follow Tibetan brown bears to catch small animals the bears scare out of burrows! 🐻", "Tibetan foxes live at altitudes up to 17,000 feet — higher than most planes fly! ✈️"],
+    whereItLives: "High altitude steppes of Tibet and China 🏔️",
+    whatItEats: "Pikas, rodents, and lizards 🐭",
+    sound: "Soft barks and yips 🐕",
+  },
+  {
+    name: "Honduran White Bat", emoji: "🦇", color: "#FDCB6E", nickname: "the fluffy cloud bat",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=14.0,-87.0&zoom=6&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It cuts giant leaves to make a tiny tent where it sleeps — like a real life architect! 🏠",
+    funFacts: ["These bats are snow white and tiny enough to fit inside a walnut shell!", "They roost in groups of up to 15 under a leaf, glowing green in UV light! 💚", "When sunlight shines through their leaf tent it turns them green — perfect camouflage! 🌿"],
+    whereItLives: "Rainforests of Central America 🌴",
+    whatItEats: "Fruit, especially figs 🍎",
+    sound: "High pitched squeaks too tiny to hear properly 🔉",
+  },
+  {
+    name: "Maned Wolf", emoji: "🐺", color: "#E17055", nickname: "the fox on stilts",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-15.0,-47.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "Its super long legs let it see over tall grass like it has built-in stilts! 🦵",
+    funFacts: ["The maned wolf smells exactly like skunk spray — predators stay far away!", "Maned wolves eat more fruit than meat — their favorite food is a tomato-like fruit called wolf apple! 🍅", "They're neither wolves nor foxes — they're the only species in their entire genus! 🌟"],
+    whereItLives: "Grasslands of South America 🌾",
+    whatItEats: "Fruit, rodents, and birds — it loves fruit more than meat! 🍓",
+    sound: "A loud roar-bark that carries for miles at night 🌙",
+  },
+  {
+    name: "Thorny Devil", emoji: "🦎", color: "#FDCB6E", nickname: "the spike lizard",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-25.0,130.0&zoom=5&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "Its whole body soaks up water through its skin — it drinks through its feet and back! 💧",
+    funFacts: ["The thorny devil has a fake head on its back to confuse predators!", "When it walks it bobs its head back and forth like a little robot! 🤖", "Thorny devils can change color like a chameleon depending on temperature! 🌡️"],
+    whereItLives: "Hot deserts of Australia ☀️",
+    whatItEats: "Only eats ants — up to 3,000 per meal! 🐜",
+    sound: "Completely silent and sneaky 🤫",
+  },
+  {
+    name: "Lowland Streaked Tenrec", emoji: "🦔", color: "#BADC58", nickname: "the spiky musician",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-18.0,49.0&zoom=6&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It rubs its spines together to make music and talk to its babies — like a living violin! 🎻",
+    funFacts: ["It's the only mammal known to communicate by rubbing body parts together like a cricket!", "Tenrecs look like hedgehogs but aren't related to them at all — a case of parallel evolution! 🤯", "Baby tenrecs follow their mom in a line like a tiny train! 🚂"],
+    whereItLives: "Rainforests of Madagascar 🌴",
+    whatItEats: "Earthworms and insects 🪱",
+    sound: "High-pitched buzzing made by its own spines! 🎵",
+  },
+  {
+    name: "Vampire Squid", emoji: "🦑", color: "#6C5CE7", nickname: "the vampire of the deep",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=0.0,-150.0&zoom=3&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "When scared it turns itself inside out like an umbrella to hide — a living invisibility cloak! 🌂",
+    funFacts: ["Despite its scary name, the vampire squid eats only tiny floating bits of food — totally harmless!", "The vampire squid's scientific name means 'vampire squid from hell' — quite dramatic! 😈", "It produces bioluminescent light from its body — it glows in the deep dark ocean! ✨"],
+    whereItLives: "The deep dark ocean all around the world 🌊",
+    whatItEats: "Tiny floating particles and dead plankton 🌊",
+    sound: "Silent as the deep ocean 🤫",
+  },
+  {
+    name: "Secretary Bird", emoji: "🦅", color: "#FF9F43", nickname: "the stomping eagle",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-25.0,25.0&zoom=4&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It stomps on snakes with legs powerful enough to kick through a car door! 🦵",
+    funFacts: ["Secretary birds walk up to 20 miles every single day hunting on foot like a tiny dinosaur!", "They stamp their feet on the ground to scare prey out of hiding before stomping it! 👣", "Secretary birds can deliver a kick with the force of 5 times their own body weight! 💪"],
+    whereItLives: "Open grasslands of Africa 🌍",
+    whatItEats: "Snakes, lizards, and rodents it stomps to death 🐍",
+    sound: "Deep croaking sounds like a frog 🐸",
+  },
+  {
+    name: "Pink Fairy Armadillo", emoji: "🩷", color: "#FF6B9D", nickname: "the tiny pink tank",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-32.0,-65.0&zoom=6&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It can disappear underground in seconds — the fastest digger for its size on Earth! ⚡",
+    funFacts: ["It's the world's smallest armadillo and fits in the palm of your hand!", "Pink fairy armadillos use their shell like a spatula to pat down the walls of their tunnels! 🏗️", "They're so rarely seen that scientists know almost nothing about how they live! 🔍"],
+    whereItLives: "Sandy dry grasslands of Argentina 🌾",
+    whatItEats: "Ants, worms, and plant roots 🐜",
+    sound: "Tiny squeaks when it's scared 🐭",
+  },
+  {
+    name: "Babirusa", emoji: "🐗", color: "#A29BFE", nickname: "the tusk face pig",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=0.5,120.0&zoom=6&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "Its tusks grow up through its own face and curl back over its head — like living horns! 🌀",
+    funFacts: ["If a babirusa doesn't wear down its tusks they can curve all the way back and stab its own skull!", "Babirusas love to spar with each other using their tusks like fencing swords! 🤺", "The word babirusa means 'pig deer' in Malay — because of its deer-like legs and pig-like body! 🐗"],
+    whereItLives: "Rainforests of Indonesia 🌴",
+    whatItEats: "Fruit, leaves, and mushrooms 🍄",
+    sound: "Grunts and moans like a regular pig 🐷",
+  },
+  {
+    name: "Yeti Crab", emoji: "🦀", color: "#DFE6E9", nickname: "the fuzzy arm crab",
+    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-50.0,-110.0&zoom=4&size=400x200&maptype=mapnik",
+    image: "",
+    superPower: "It grows its own food — bacteria farms on its furry arms that it harvests to eat! 🌾",
+    funFacts: ["Yeti crabs were only discovered in 2005 — hidden in the deep ocean near underwater volcanoes!", "They wave their hairy arms over hydrothermal vents to farm the bacteria that grows there! 🌾", "Scientists named them after the Yeti because of their white fluffy claws! ⛄"],
+    whereItLives: "Near underwater volcanic vents in the deep Pacific Ocean 🌋",
+    whatItEats: "Bacteria it grows on its own hairy claws 🦠",
+    sound: "Silent in the deep dark ocean 🤫",
+  },
+  {
+    name: "Okapi", emoji: "🦓", color: "#8B4513", nickname: "the forest giraffe",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=1,28&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "Its tongue is so long it can lick its own ears and eyeballs clean! 👅",
+    funFacts: ["Okapis look like a mix of zebra and giraffe but are actually the giraffe's only living relative!", "Okapis were unknown to science until 1901 — local people kept the secret for centuries! 🤫", "Their tongue is dark bluish-black and long enough to wash their own eyes and ears! 👅"],
+    whereItLives: "Dense rainforests of the Congo in Central Africa 🌿",
+    whatItEats: "Leaves, buds, and fruit it pulls down with its giant tongue 🍃",
+    sound: "Soft coughing and whistling sounds 🌬️",
+  },
+  {
+    name: "Tasmanian Devil", emoji: "😈", color: "#2D3436", nickname: "the screaming furball",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-42,146&zoom=6&size=400x200&maptype=mapnik",
+    superPower: "It has the strongest bite for its body size of any mammal on Earth — it can crunch through bone! 💀",
+    funFacts: ["Tasmanian devils scream so loud at night they terrified early settlers into thinking demons were real!", "They can eat up to 40% of their body weight in one meal — the ultimate buffet champion! 🍽️", "Tasmanian devils sneeze to challenge each other — the devil who sneezes first backs down! 🤧"],
+    whereItLives: "The island of Tasmania, Australia 🇦🇺",
+    whatItEats: "Whatever it finds — even fur and bones! 🦴",
+    sound: "Bloodcurdling screams and growls in the dark 😱",
+  },
+  {
+    name: "Gharial", emoji: "🐊", color: "#27AE60", nickname: "the long nose croc",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=27,82&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "Its super thin snout can snap sideways through water faster than any other crocodile! ⚡",
+    funFacts: ["Male gharials grow a big blob on the tip of their nose that buzzes like a kazoo to attract mates!", "Gharials are critically endangered — fewer than 1,000 survive in the wild! 😢", "Baby gharials ride on top of their dad's head for protection — best dad in the reptile world! 👨‍👧"],
+    whereItLives: "Rivers of northern India and Nepal 🏔️",
+    whatItEats: "Fish it snaps sideways out of the water 🐟",
+    sound: "Hissing and a buzzing kazoo noise from its nose! 🎵",
+  },
+  {
+    name: "Pygmy Seahorse", emoji: "🌊", color: "#FF6B9D", nickname: "the invisible sea horse",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-5,122&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "It matches its coral home so perfectly that scientists didn't know it existed until they cut open a coral! 🪸",
+    funFacts: ["Pygmy seahorses are smaller than your thumbnail — the tiniest seahorse in the world!", "They were only discovered when a scientist brought a piece of coral to a lab and found them on it! 🔬", "Each pygmy seahorse lives on exactly one coral its whole life — its home forever! 🏠"],
+    whereItLives: "Coral reefs of Southeast Asia 🪸",
+    whatItEats: "Tiny shrimp and plankton it hoovers up 🌀",
+    sound: "Tiny clicking sounds 🎵",
+  },
+  {
+    name: "Wombat", emoji: "🐨", color: "#795548", nickname: "the cube poop maker",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-33,149&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "It's the only animal on Earth that makes cube-shaped poop — scientists are still figuring out how! 🟫",
+    funFacts: ["Wombats have a super tough butt made of cartilage — they block their burrow with it to crush predators!", "Wombats are the only animals on Earth that produce cube-shaped poop — scientists are still figuring out how! 🟫", "A wombat burrow can be up to 100 feet long — a whole underground mansion! 🏰"],
+    whereItLives: "Forests and grasslands of southeastern Australia 🇦🇺",
+    whatItEats: "Grass, roots, and bark 🌿",
+    sound: "Grunts, hisses, and low growls 🐷",
+  },
+  {
+    name: "Harpy Eagle", emoji: "🦅", color: "#263238", nickname: "the flying wolf",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=5,-60&zoom=4&size=400x200&maptype=mapnik",
+    superPower: "Its talons are bigger than a grizzly bear's claws and can crush bones in an instant! 💪",
+    funFacts: ["Harpy eagles are so big they can carry prey as heavy as a small child into the sky!", "They can fly at 50 miles per hour through dense jungle without hitting a single branch! 🌳", "A harpy eagle pair raises only one chick every 2–3 years — parenting is serious business! 👨‍👩‍👦"],
+    whereItLives: "Rainforests of Central and South America 🌴",
+    whatItEats: "Monkeys, sloths, and large reptiles 🐒",
+    sound: "Loud wailing screams through the forest 😤",
+  },
+  {
+    name: "Mudskipper", emoji: "🐟", color: "#8D6E63", nickname: "the walking fish",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=10,107&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "It walks on land using its fins like crutches and can even climb trees! 🌳",
+    funFacts: ["Mudskippers breathe through their skin — they have to stay moist or they suffocate on land!", "Male mudskippers dig burrows and fill them with air to create an oxygen bubble for their eggs! 🫧", "They can see in two directions at once and their eyes can move independently! 👀"],
+    whereItLives: "Mudflats and mangroves of West Africa and Asia 🌊",
+    whatItEats: "Insects, worms, and algae it finds in the mud 🐛",
+    sound: "Pops and grunts as it skips across mud 💨",
+  },
+  {
+    name: "Slow Loris", emoji: "🙈", color: "#FF9F43", nickname: "the venomous cutie",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=5,110&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "It's the only venomous primate — it licks a gland on its arm then bites to inject poison! ☠️",
+    funFacts: ["Despite looking incredibly cute, slow lorises are actually one of the world's most venomous mammals!", "Slow lorises have a special bone under their tongue that helps them produce venom! ☠️", "They move so slowly that algae sometimes grows on their fur — nature's own camouflage! 🌿"],
+    whereItLives: "Rainforests of South and Southeast Asia 🌴",
+    whatItEats: "Fruit, insects, and tree sap 🍎",
+    sound: "High-pitched whistles and soft hoots 🎵",
+  },
+  {
+    name: "Hammerhead Worm", emoji: "🪱", color: "#9C27B0", nickname: "the land shark worm",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=20,0&zoom=2&size=400x200&maptype=mapnik",
+    superPower: "If you cut it in half it grows into TWO worms — it's basically immortal! ✂️",
+    funFacts: ["It hunts earthworms by releasing a chemical that paralyzes them, then dissolves them to drink!", "Hammerhead worms are invasive — they've spread across the world and eat all the earthworms! 😱", "If you cut one in half both halves regrow into complete worms — cutting them makes more! ✂️"],
+    whereItLives: "Warm humid areas on every continent except Antarctica 🌍",
+    whatItEats: "Earthworms and slugs it dissolves with its stomach juices 🫠",
+    sound: "Completely silent 🤫",
+  },
+  {
+    name: "Coconut Crab", emoji: "🦀", color: "#E64A19", nickname: "the tree climbing giant",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-10,105&zoom=4&size=400x200&maptype=mapnik",
+    superPower: "It climbs palm trees and cracks coconuts open with its bare claws — the strongest grip of any crustacean! 🥥",
+    funFacts: ["Coconut crabs are the largest land invertebrate on Earth and can live to be 60 years old!", "They have an incredible sense of smell and can sniff out food from miles away! 👃", "Young coconut crabs carry shells on their back like hermit crabs until they're big enough! 🐚"],
+    whereItLives: "Tropical islands in the Indian and Pacific Oceans 🏝️",
+    whatItEats: "Coconuts, fruit, and whatever it can scavenge 🥥",
+    sound: "Clicks and scraping sounds as it climbs 🌴",
+  },
+  {
+    name: "Snubnosed Monkey", emoji: "🐵", color: "#FF5722", nickname: "the sneeze monkey",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=28,103&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "Its upturned nose makes it sneeze every time it rains — it tucks its face between its knees in storms! 🤧",
+    funFacts: ["Golden snub-nosed monkeys have bright blue faces and golden fur — they look like tiny aliens!", "They live in bigger groups than almost any other primate — up to 600 in one band! 👥", "In winter their fur gets extra thick and fluffy — nature's built-in winter coat! 🧥"],
+    whereItLives: "Mountain forests of central China 🏔️",
+    whatItEats: "Lichen, bark, leaves, and seeds 🌿",
+    sound: "Chirps and calls that echo through mountain valleys 🏔️",
+  },
+  {
+    name: "Mimic Octopus", emoji: "🐙", color: "#FF7043", nickname: "the master of disguise",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-5,118&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "It can impersonate over 15 different dangerous animals including lionfish, flatfish, and sea snakes! 🎭",
+    funFacts: ["The mimic octopus chooses WHICH animal to impersonate based on what predator is nearby!", "It was only discovered in 1998 off the coast of Indonesia — a brand new animal! 🆕", "Scientists think the mimic octopus may copy animals it has never even seen before! 🤯"],
+    whereItLives: "Shallow tropical waters of the Indo-Pacific 🌊",
+    whatItEats: "Fish and crustaceans 🦀",
+    sound: "Silent but deadly clever 🤫",
+  },
+  {
+    name: "Sailfish", emoji: "🐠", color: "#1565C0", nickname: "the ocean rocket",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=10,-30&zoom=3&size=400x200&maptype=mapnik",
+    superPower: "It's the fastest fish in the ocean — clocked at 68 miles per hour, faster than a cheetah on land! 🚀",
+    funFacts: ["Sailfish fold down their giant sail fin to go faster, then pop it up to herd fish into tight balls!", "A sailfish's bill is razor sharp and it shakes it side to side to slash through schools of fish! ⚔️", "Baby sailfish start life as plankton smaller than a grain of rice and grow to 10 feet long! 📏"],
+    whereItLives: "Warm oceans around the world 🌊",
+    whatItEats: "Fish and squid it stuns with its bill 🦑",
+    sound: "Silent speedster 💨",
+  },
+  {
+    name: "Pika", emoji: "🐭", color: "#78909C", nickname: "the tiny mountain squeaker",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=40,100&zoom=4&size=400x200&maptype=mapnik",
+    superPower: "It harvests and dries plants like a tiny farmer to store food for winter — the ultimate meal prepper! 🌾",
+    funFacts: ["Pikas don't hibernate — they stay active all winter in tunnels under the snow!", "Pikas make little haystacks of dried plants — sometimes over 50 pounds worth! 🌾", "They're one of the first animals affected by climate change — warming temperatures push them higher up mountains! 🏔️"],
+    whereItLives: "Rocky mountain slopes in Asia and North America 🏔️",
+    whatItEats: "Grasses, flowers, and dried plants it stored 🌸",
+    sound: "Loud sharp squeaks that echo through mountains 📣",
+  },
+  {
+    name: "Ribbon Eel", emoji: "🌊", color: "#7B1FA2", nickname: "the rainbow sea snake",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=5,120&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "It can change sex — all ribbon eels are born male, then turn female as they get older! 🌈",
+    funFacts: ["Young ribbon eels are jet black, then turn bright blue and yellow as they grow up!", "All ribbon eels are born male — they only become female when they're fully grown! 🌈", "Ribbon eels can grow up to 4 feet long despite being as thin as a ribbon! 📏"],
+    whereItLives: "Coral reefs of the Indo-Pacific ocean 🪸",
+    whatItEats: "Small fish it ambushes from its burrow 🐟",
+    sound: "Silent reef dweller 🤫",
+  },
+  {
+    name: "Capybara", emoji: "🦫", color: "#A1887F", nickname: "the friendliest giant",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-10,-55&zoom=4&size=400x200&maptype=mapnik",
+    superPower: "Every animal loves it — birds, monkeys, and even crocodiles chill on capybaras peacefully! 🕊️",
+    funFacts: ["Capybaras are the world's largest rodents — basically a giant friendly guinea pig the size of a dog!", "Every other animal seems to love capybaras — birds, monkeys, even crocodiles sit on them! 🐊", "Capybaras eat their own poop in the morning to get extra nutrients — yuck but effective! 💩"],
+    whereItLives: "Riverbanks and wetlands of South America 🌿",
+    whatItEats: "Grass and aquatic plants 🌾",
+    sound: "Purrs, barks, whistles, and clicks — very chatty! 💬",
+  },
+  {
+    name: "Lyrebird", emoji: "🎵", color: "#6D4C41", nickname: "the nature's DJ",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-35,149&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "It can perfectly copy any sound it hears — chainsaws, camera shutters, other birds, even car alarms! 🎤",
+    funFacts: ["A lyrebird's song can contain the calls of up to 20 different bird species all at once!", "Lyrebirds have been recorded copying chainsaws, camera shutters, and even car alarms perfectly! 📷", "It takes a male lyrebird up to 7 years to grow his full beautiful tail feathers! 🪶"],
+    whereItLives: "Forests of southeastern Australia 🇦🇺",
+    whatItEats: "Insects, worms, and grubs it scratches up from the forest floor 🐛",
+    sound: "Literally any sound it has ever heard! 🎶",
+  },
+  {
+    name: "Pistol Shrimp", emoji: "🦐", color: "#F57F17", nickname: "the tiny gun shrimp",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=15,55&zoom=4&size=400x200&maptype=mapnik",
+    superPower: "It snaps its claw so fast it creates a bubble hotter than the surface of the sun for a split second! ☀️",
+    funFacts: ["The snap of a pistol shrimp is one of the loudest sounds in the ocean — louder than a gunshot!", "Pistol shrimp often team up with gobies — the shrimp digs, the goby keeps watch! 🤝", "Colonies of pistol shrimp snapping together create so much noise it interferes with sonar! 📡"],
+    whereItLives: "Tropical and subtropical oceans worldwide 🌊",
+    whatItEats: "Small fish and shrimp it stuns with its sonic snap 💥",
+    sound: "SNAP — one of the loudest sounds in the sea! 💥",
+  },
+  {
+    name: "Pangasius", emoji: "🐡", color: "#0288D1", nickname: "the blind cave fish",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=22,-99&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "It lives in total darkness and has no eyes at all — it senses everything through vibrations! 🌑",
+    funFacts: ["Mexican blind cavefish evolved from normal fish that swam into caves thousands of years ago and lost their eyes!", "Blind cavefish still do the eye movements that sighted fish do — they just have no eyes to move! 👁️", "Different cave populations evolved blindness separately — eyes are expensive energy to grow! ⚡"],
+    whereItLives: "Underground caves in Mexico 🏔️",
+    whatItEats: "Bacteria and tiny bits of food that wash into caves 🦠",
+    sound: "Totally silent in the dark 🤫",
+  },
+  {
+    name: "Sunfish", emoji: "🐟", color: "#78909C", nickname: "the floating head fish",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=30,-40&zoom=3&size=400x200&maptype=mapnik",
+    superPower: "It's the heaviest bony fish in the world — some grow as heavy as a car! 🚗",
+    funFacts: ["Ocean sunfish look like someone cut a fish in half — they're basically just a giant swimming head with fins!", "Sunfish can leap completely out of the water despite weighing over a ton! 🌊", "A sunfish can have up to 300 million eggs at one time — more than almost any other vertebrate! 🥚"],
+    whereItLives: "Tropical and temperate oceans worldwide 🌊",
+    whatItEats: "Jellyfish mostly — it eats thousands per day 🪼",
+    sound: "Silent giant 🤫",
+  },
+  {
+    name: "Fennec Fox", emoji: "🦊", color: "#FFD54F", nickname: "the big ear fox",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=23,13&zoom=4&size=400x200&maptype=mapnik",
+    superPower: "Its giant ears can hear prey moving underground and also act as radiators to cool its blood! 👂",
+    funFacts: ["Fennec foxes are the world's smallest fox but have the biggest ears relative to body size of any canid!", "Their giant ears can hear insects moving underground from the surface! 👂", "Fennec fox paws are covered in fur to protect them from burning hot sand! 🔥"],
+    whereItLives: "The Sahara desert and North Africa ☀️",
+    whatItEats: "Insects, rodents, and plants it digs up 🐛",
+    sound: "Loud chirping, whimpering, and barking 🐕",
+  },
+  {
+    name: "Hagfish", emoji: "🐍", color: "#607D8B", nickname: "the slime monster",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=50,-30&zoom=3&size=400x200&maptype=mapnik",
+    superPower: "When attacked it releases a bucketful of thick slime that clogs predators' gills in seconds! 🤢",
+    funFacts: ["Hagfish can tie themselves in a knot and slide the knot down their body to scrape off their own slime!", "Hagfish have no jaw — they have two pairs of tooth-like plates they use to grab food! 🦷", "Their slime expands to 10,000 times its original size when it hits water — instantly! 💧"],
+    whereItLives: "Cold deep oceans around the world 🌊",
+    whatItEats: "Dead animals it burrows inside and eats from within 💀",
+    sound: "Silent slime machine 🤫",
+  },
+  {
+    name: "Kinkajou", emoji: "🐒", color: "#FF8F00", nickname: "the honey bear monkey",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=8,-77&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "Its tail is fully prehensile — it can hang from it while using both hands to eat! 🌀",
+    funFacts: ["Kinkajous have a tongue so long they can lick the inside of a flower clean — they're great pollinators!", "They're nocturnal and have special eyes that glow in the dark like a cat! 🌙", "Kinkajous can rotate their feet backwards to help them run down trees headfirst! 🌳"],
+    whereItLives: "Tropical rainforests of Central and South America 🌴",
+    whatItEats: "Fruit, nectar, and honey 🍯",
+    sound: "Screams, barks, and high-pitched squeaks at night 🌙",
+  },
+  {
+    name: "Geoduck", emoji: "🐚", color: "#26A69A", nickname: "the giant neck clam",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=48,-123&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "It can live for over 150 years — one of the longest living animals on the planet! ⏳",
+    funFacts: ["A geoduck's neck can stretch to 3 feet long — way longer than its shell!", "Geoducks can live for over 150 years — some alive today were born before your great-grandparents! ⏳", "The oldest known geoduck was 168 years old — found in Washington State! 🏆"],
+    whereItLives: "Pacific coast of North America buried in the sea floor 🌊",
+    whatItEats: "Tiny algae and plankton it filters from the water 🌱",
+    sound: "Squirts water when disturbed 💦",
+  },
+  {
+    name: "Zorilla", emoji: "🦨", color: "#212121", nickname: "the world's smelliest animal",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-20,25&zoom=4&size=400x200&maptype=mapnik",
+    superPower: "Its spray is so powerful it can be smelled from half a mile away — even worse than a skunk! 💨",
+    funFacts: ["The zorilla is officially considered the world's most pungent animal — even lions back away!", "Its black and white stripes warn predators from a distance — nature's stink warning label! ⚠️", "Zorillas can spray their scent up to 5 times in a row before running out! 💨"],
+    whereItLives: "Dry grasslands and scrublands of Africa 🌍",
+    whatItEats: "Mice, lizards, snakes, and insects 🐭",
+    sound: "Screams and growls before spraying 😤",
+  },
+  {
+    name: "Immortal Jellyfish", emoji: "🪼", color: "#80DEEA", nickname: "the forever jellyfish",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=40,15&zoom=4&size=400x200&maptype=mapnik",
+    superPower: "When it gets old or sick it turns back into a baby and starts its life over — it never has to die! ♾️",
+    funFacts: ["Scientists call it biologically immortal — it's the only known animal that can reverse its own aging!", "When stressed or hungry it sinks to the ocean floor and transforms back into a tiny polyp! 🔄", "The immortal jellyfish has spread across the world by hitchhiking on cargo ships! 🚢"],
+    whereItLives: "Warm tropical oceans worldwide 🌊",
+    whatItEats: "Plankton, fish eggs, and tiny sea creatures 🌱",
+    sound: "Silent drifter 🤫",
+  },
+  {
+    name: "Tarsier", emoji: "🐒", color: "#5D4037", nickname: "the big eye night hunter",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=8,124&zoom=6&size=400x200&maptype=mapnik",
+    superPower: "Each of its eyes is bigger than its brain — the largest eyes relative to body size of any mammal! 👀",
+    funFacts: ["Tarsiers can rotate their heads nearly 360 degrees like an owl — they can see behind themselves!", "Each tarsier eye is bigger than its brain AND its stomach — all about the vision! 👀", "Tarsiers are the only fully carnivorous primates — they eat nothing but meat! 🥩"],
+    whereItLives: "Islands of Southeast Asia including the Philippines 🌴",
+    whatItEats: "Insects, lizards, and small birds it catches at night 🦎",
+    sound: "Ultrasonic calls too high-pitched for humans to hear! 🔇",
+  },
+  {
+    name: "Binturong", emoji: "🐻", color: "#4A148C", nickname: "the popcorn bear cat",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=15,102&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "It smells exactly like buttered popcorn — scientists figured out it comes from its pee! 🍿",
+    funFacts: ["Despite being called a bearcat, the binturong is related to neither bears nor cats!", "Their popcorn smell comes from a chemical in their urine — they scent-mark everything! 🍿", "Binturongs help spread fig trees by digesting fig seeds — nature's gardeners! 🌳"],
+    whereItLives: "Rainforests of South and Southeast Asia 🌴",
+    whatItEats: "Fruit, fish, rodents, and birds 🍎",
+    sound: "Chuckles, wails, and hisses 😄",
+  },
+  {
+    name: "Shovel-nosed Frog", emoji: "🐸", color: "#7CB342", nickname: "the bumblebee frog",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-20,45&zoom=5&size=400x200&maptype=mapnik",
+    superPower: "Its tiny round body and huge head means it walks like a waddling ball — the funniest walk in nature! 🎳",
+    funFacts: ["Despite being a frog it barely hops — it mostly just walks around looking hilariously grumpy!", "It can dig backwards into the ground in seconds using its pointy snout like a shovel! ⛏️", "Shovel-nosed frogs are only active a few weeks a year during the rainy season! ☔"],
+    whereItLives: "Dry forests and grasslands of Madagascar 🌴",
+    whatItEats: "Termites and ants it finds underground 🐜",
+    sound: "A surprisingly loud buzzing croak for its tiny size 📢",
+  },
+  {
+    name: "Velvet Worm", emoji: "🪱", color: "#558B2F", nickname: "the living fossil",
+    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=-20,-45&zoom=4&size=400x200&maptype=mapnik",
+    superPower: "It shoots sticky slime jets from its head to trap prey — a living slime cannon! 💦",
+    funFacts: ["Velvet worms have barely changed in over 500 million years — they looked the same before dinosaurs existed!", "They shoot two jets of slime simultaneously that tangle together mid-air to form a net! 🕸️", "Baby velvet worms are born live and fully formed — no eggs, no larva stage! 🐛"],
+    whereItLives: "Humid forests of the Southern Hemisphere 🌿",
+    whatItEats: "Insects and small invertebrates it slimes and eats 🐛",
+    sound: "Completely silent ancient hunter 🤫",
+  },
+];
+
+const pastelBg = ["#FFF0F6","#FFF4E6","#F0F4FF","#F0FFF4","#FFF9E6","#F5F0FF"];
+
+function getRandomAnimal(currentName) {
+  const filtered = ANIMALS.filter(a => a.name !== currentName);
+  return filtered[Math.floor(Math.random() * filtered.length)];
+}
+
+function AnimalExplorer() {
+  const [animal, setAnimal] = React.useState(null);
+  const [bgColor, setBgColor] = React.useState("#F0F8FF");
+  const [bounce, setBounce] = React.useState(false);
+  const [imgError, setImgError] = React.useState(false);
+  const [favorites, setFavorites] = React.useState([]);
+  const [factIndex, setFactIndex] = React.useState(0);
+  const [view, setView] = React.useState("explore");
+  const [quiz, setQuiz] = React.useState(null);
+  const [quizScore, setQuizScore] = React.useState({ correct: 0, total: 0 });
+
+  function discover() {
+    setBounce(false);
+    setImgError(false);
+    setFactIndex(0);
+    const next = getRandomAnimal(animal?.name);
+    setAnimal(next);
+    setBgColor(pastelBg[Math.floor(Math.random() * pastelBg.length)]);
+    setTimeout(() => setBounce(true), 50);
+  }
+
+  function toggleFavorite(a) {
+    setFavorites(prev =>
+      prev.find(f => f.name === a.name)
+        ? prev.filter(f => f.name !== a.name)
+        : [...prev, a]
+    );
+  }
+
+  const isFavorited = animal && favorites.find(f => f.name === animal.name);
+
+  function startQuiz() {
+    setView("quiz");
+    nextQuizQuestion(null);
+  }
+
+  function nextQuizQuestion(currentAnimal) {
+    const pool = ANIMALS.filter(a => a.name !== currentAnimal?.name);
+    const correct = pool[Math.floor(Math.random() * pool.length)];
+    const wrong = ANIMALS.filter(a => a.name !== correct.name);
+    const wrongPicks = wrong.sort(() => 0.5 - Math.random()).slice(0, 3);
+    const choices = [...wrongPicks, correct].sort(() => 0.5 - Math.random());
+    setQuiz({ animal: correct, choices, selected: null, correct: false });
+  }
+
+  function handleQuizAnswer(choice) {
+    if (quiz.selected) return;
+    const correct = choice.name === quiz.animal.name;
+    setQuiz(q => ({ ...q, selected: choice.name, correct }));
+    setQuizScore(s => ({ correct: s.correct + (correct ? 1 : 0), total: s.total + 1 }));
+  }
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: view === "favorites" ? "#FFF9E6" : view === "quiz" ? "#F0FFF4" : bgColor,
+      transition: "background 0.6s ease",
+      fontFamily: "'Nunito', 'Arial Rounded MT Bold', Arial, sans-serif",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      padding: "20px 16px 40px",
+    }}>
+      <div style={{ textAlign: "center", marginBottom: "20px", width: "100%", maxWidth: "480px" }}>
+        <div style={{ fontSize: "48px", lineHeight: 1 }}>🌍</div>
+        <h1 style={{ fontSize: "clamp(28px, 6vw, 42px)", fontWeight: 900, color: "#2D3436", margin: "8px 0 4px", letterSpacing: "-0.5px" }}>Wild Animal Explorer</h1>
+        <p style={{ color: "#636E72", fontSize: "16px", margin: 0 }}>Discover amazing animals from around the world!</p>
+        <div style={{ display: "flex", gap: "8px", justifyContent: "center", marginTop: "16px", flexWrap: "wrap" }}>
+          {[
+            { id: "explore", label: "🔍 Explore", activeColor: "linear-gradient(135deg, #6C5CE7, #a29bfe)" },
+            { id: "favorites", label: "❤️ Favorites", activeColor: "linear-gradient(135deg, #E84393, #fd79a8)" },
+            { id: "quiz", label: "🧠 Quiz", activeColor: "linear-gradient(135deg, #F39C12, #FDCB6E)" },
+          ].map(tab => (
+            <button key={tab.id} onClick={() => tab.id === "quiz" ? startQuiz() : setView(tab.id)} style={{
+              background: view === tab.id ? tab.activeColor : "white",
+              color: view === tab.id ? "white" : "#636E72",
+              border: "2px solid", borderColor: view === tab.id ? "transparent" : "#E0E0E0",
+              borderRadius: "50px", padding: "10px 20px", fontSize: "15px", fontWeight: 800,
+              cursor: "pointer", fontFamily: "inherit",
+            }}>
+              {tab.label}{tab.id === "favorites" && favorites.length > 0 && (
+                <span style={{ background: "#E84393", color: "white", borderRadius: "50%", fontSize: "11px", fontWeight: 900, padding: "1px 6px", marginLeft: "6px" }}>{favorites.length}</span>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {view === "explore" && (
+        <>
+          <button onClick={discover} style={{
+            background: "linear-gradient(135deg, #6C5CE7, #a29bfe)", color: "white", border: "none",
+            borderRadius: "50px", padding: "18px 44px", fontSize: "22px", fontWeight: 800,
+            cursor: "pointer", boxShadow: "0 6px 20px rgba(108,92,231,0.4)", fontFamily: "inherit",
+          }}>{animal ? "🎲 New Animal!" : "🐾 Discover an Animal!"}</button>
+
+          {animal && (
+            <div style={{
+              marginTop: "28px", width: "100%", maxWidth: "480px",
+              opacity: bounce ? 1 : 0,
+              transform: bounce ? "translateY(0) scale(1)" : "translateY(20px) scale(0.97)",
+              transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+            }}>
+              <div style={{ background: "white", borderRadius: "24px", overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.08)", marginBottom: "14px", textAlign: "center", borderTop: `6px solid ${animal.color}` }}>
+                <div style={{ width: "100%", height: "180px", background: animal.color + "18", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ fontSize: "80px" }}>{animal.emoji}</div>
+                </div>
+                <div style={{ padding: "18px 24px 20px" }}>
+                  <h2 style={{ fontSize: "30px", fontWeight: 900, color: "#2D3436", margin: "0 0 6px" }}>{animal.name}</h2>
+                  <div style={{ display: "inline-block", background: animal.color + "22", color: animal.color, borderRadius: "20px", padding: "4px 16px", fontSize: "14px", fontWeight: 700, marginBottom: "14px" }}>aka "{animal.nickname}"</div>
+                  <div>
+                    <button onClick={() => toggleFavorite(animal)} style={{
+                      background: isFavorited ? "#fff0f6" : "#f8f8f8",
+                      border: `2px solid ${isFavorited ? "#E84393" : "#E0E0E0"}`,
+                      borderRadius: "50px", padding: "8px 20px", fontSize: "16px", fontWeight: 800,
+                      cursor: "pointer", color: isFavorited ? "#E84393" : "#636E72", fontFamily: "inherit",
+                    }}>{isFavorited ? "❤️ Saved!" : "🤍 Save to Favorites"}</button>
+                  </div>
+                </div>
+              </div>
+
+              {[
+                { icon: "⚡", label: "Super Power", text: animal.superPower, color: "#6C5CE7" },
+                { icon: "🍽️", label: "What It Eats", text: animal.whatItEats, color: "#E17055" },
+                { icon: "🔊", label: "Its Sound", text: animal.sound, color: "#0984E3" },
+              ].map((card, i) => (
+                <div key={i} style={{ background: "white", borderRadius: "18px", padding: "16px 20px", marginBottom: "10px", boxShadow: "0 4px 16px rgba(0,0,0,0.06)", display: "flex", alignItems: "flex-start", gap: "14px", borderLeft: `4px solid ${card.color}` }}>
+                  <span style={{ fontSize: "26px", lineHeight: 1, flexShrink: 0 }}>{card.icon}</span>
+                  <div>
+                    <div style={{ fontSize: "11px", fontWeight: 800, color: card.color, textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "3px" }}>{card.label}</div>
+                    <div style={{ fontSize: "16px", color: "#2D3436", lineHeight: 1.5, fontWeight: 600 }}>{card.text}</div>
+                  </div>
+                </div>
+              ))}
+
+              <div style={{ background: "white", borderRadius: "18px", padding: "16px 20px", marginBottom: "10px", boxShadow: "0 4px 16px rgba(0,0,0,0.06)", display: "flex", alignItems: "flex-start", gap: "14px", borderLeft: "4px solid #E84393" }}>
+                <span style={{ fontSize: "26px", lineHeight: 1, flexShrink: 0 }}>🤩</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "3px" }}>
+                    <div style={{ fontSize: "11px", fontWeight: 800, color: "#E84393", textTransform: "uppercase", letterSpacing: "0.8px" }}>Fun Fact</div>
+                    <button onClick={() => setFactIndex(i => (i + 1) % animal.funFacts.length)} style={{
+                      background: "#E8439318", border: "none", borderRadius: "20px", padding: "3px 10px",
+                      fontSize: "12px", fontWeight: 800, color: "#E84393", cursor: "pointer", fontFamily: "inherit",
+                    }}>🎲 New fact</button>
+                  </div>
+                  <div style={{ fontSize: "16px", color: "#2D3436", lineHeight: 1.5, fontWeight: 600 }}>{animal.funFacts[factIndex]}</div>
+                  <div style={{ fontSize: "11px", color: "#B2BEC3", marginTop: "4px" }}>{factIndex + 1} of {animal.funFacts.length}</div>
+                </div>
+              </div>
+
+              <div style={{ background: "white", borderRadius: "18px", marginBottom: "10px", boxShadow: "0 4px 16px rgba(0,0,0,0.06)", overflow: "hidden", borderLeft: "4px solid #00B894" }}>
+                <div style={{ padding: "12px 20px 8px", display: "flex", alignItems: "center", gap: "10px" }}>
+                  <span style={{ fontSize: "26px" }}>📍</span>
+                  <div style={{ fontSize: "11px", fontWeight: 800, color: "#00B894", textTransform: "uppercase", letterSpacing: "0.8px" }}>Where It Lives</div>
+                </div>
+                <div style={{ fontSize: "15px", color: "#2D3436", fontWeight: 600, padding: "0 20px 12px 56px" }}>{animal.whereItLives}</div>
+              </div>
+
+              <p style={{ textAlign: "center", color: "#B2BEC3", fontSize: "13px", marginTop: "16px" }}>Tap "New Animal" to discover another one! 🐾</p>
+            </div>
+          )}
+
+          {!animal && (
+            <div style={{ marginTop: "50px", textAlign: "center", color: "#B2BEC3" }}>
+              <div style={{ fontSize: "64px" }}>🐾</div>
+              <p style={{ fontSize: "17px", marginTop: "12px" }}>Press the button to meet your first animal!</p>
+            </div>
+          )}
+        </>
+      )}
+
+      {view === "quiz" && quiz && (
+        <div style={{ width: "100%", maxWidth: "480px", marginTop: "8px" }}>
+          <div style={{ textAlign: "center", marginBottom: "16px" }}>
+            <span style={{ background: "white", borderRadius: "50px", padding: "8px 24px", fontWeight: 800, fontSize: "16px", color: "#2D3436", boxShadow: "0 2px 10px rgba(0,0,0,0.08)" }}>
+              ⭐ {quizScore.correct} / {quizScore.total} correct
+            </span>
+          </div>
+          <div style={{ background: "white", borderRadius: "24px", padding: "24px", boxShadow: "0 8px 32px rgba(0,0,0,0.08)", marginBottom: "16px", borderTop: "6px solid #F39C12" }}>
+            <div style={{ fontSize: "13px", fontWeight: 800, color: "#F39C12", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "12px" }}>🔍 Guess the animal!</div>
+            {[
+              { icon: "⚡", label: "Super Power", text: quiz.animal.superPower },
+              { icon: "📍", label: "Where It Lives", text: quiz.animal.whereItLives },
+              { icon: "🍽️", label: "What It Eats", text: quiz.animal.whatItEats },
+            ].map((clue, i) => (
+              <div key={i} style={{ background: "#F8F9FA", borderRadius: "12px", padding: "12px 16px", marginBottom: "8px", display: "flex", gap: "10px", alignItems: "flex-start" }}>
+                <span style={{ fontSize: "20px", flexShrink: 0 }}>{clue.icon}</span>
+                <div>
+                  <div style={{ fontSize: "10px", fontWeight: 800, color: "#B2BEC3", textTransform: "uppercase", letterSpacing: "0.8px" }}>{clue.label}</div>
+                  <div style={{ fontSize: "15px", color: "#2D3436", fontWeight: 600 }}>{clue.text}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "16px" }}>
+            {quiz.choices.map((choice, i) => {
+              const isSelected = quiz.selected === choice.name;
+              const isCorrect = choice.name === quiz.animal.name;
+              let bg = "white", border = "2px solid #E0E0E0", color = "#2D3436";
+              if (quiz.selected) {
+                if (isCorrect) { bg = "#00B894"; border = "2px solid #00B894"; color = "white"; }
+                else if (isSelected) { bg = "#E17055"; border = "2px solid #E17055"; color = "white"; }
+              }
+              return (
+                <button key={i} onClick={() => handleQuizAnswer(choice)} style={{
+                  background: bg, border, borderRadius: "16px", padding: "16px 12px", fontSize: "15px",
+                  fontWeight: 800, cursor: quiz.selected ? "default" : "pointer", color,
+                  fontFamily: "inherit", display: "flex", flexDirection: "column", alignItems: "center",
+                  gap: "6px", boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+                }}>
+                  <span style={{ fontSize: "28px" }}>{choice.emoji}</span>
+                  <span>{choice.name}</span>
+                </button>
+              );
+            })}
+          </div>
+          {quiz.selected && (
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "22px", fontWeight: 900, color: quiz.correct ? "#00B894" : "#E17055", marginBottom: "8px" }}>
+                {quiz.correct ? "🎉 That's right!" : `❌ It was the ${quiz.animal.name}!`}
+              </div>
+              <div style={{ fontSize: "14px", color: "#636E72", marginBottom: "16px" }}>aka "{quiz.animal.nickname}"</div>
+              <button onClick={() => nextQuizQuestion(quiz.animal)} style={{
+                background: "linear-gradient(135deg, #F39C12, #FDCB6E)", color: "white", border: "none",
+                borderRadius: "50px", padding: "14px 36px", fontSize: "18px", fontWeight: 800,
+                cursor: "pointer", fontFamily: "inherit", boxShadow: "0 4px 16px rgba(243,156,18,0.4)",
+              }}>Next Animal ➡️</button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {view === "favorites" && (
+        <div style={{ width: "100%", maxWidth: "480px", marginTop: "8px" }}>
+          {favorites.length === 0 ? (
+            <div style={{ textAlign: "center", color: "#B2BEC3", marginTop: "40px" }}>
+              <div style={{ fontSize: "64px" }}>🤍</div>
+              <p style={{ fontSize: "17px", marginTop: "12px" }}>No favorites yet! Go explore and save animals you love.</p>
+            </div>
+          ) : (
+            <>
+              <p style={{ textAlign: "center", color: "#636E72", fontSize: "15px", marginBottom: "16px" }}>Your favorite animals ❤️</p>
+              {favorites.map((fav, i) => (
+                <div key={i} onClick={() => { setAnimal(fav); setBgColor(pastelBg[Math.floor(Math.random() * pastelBg.length)]); setBounce(false); setImgError(false); setFactIndex(0); setView("explore"); setTimeout(() => setBounce(true), 50); }}
+                  style={{ background: "white", borderRadius: "20px", padding: "16px 20px", marginBottom: "12px", boxShadow: "0 4px 16px rgba(0,0,0,0.06)", borderLeft: `5px solid ${fav.color}`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", cursor: "pointer" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                    <span style={{ fontSize: "36px" }}>{fav.emoji}</span>
+                    <div>
+                      <div style={{ fontWeight: 900, fontSize: "17px", color: "#2D3436" }}>{fav.name}</div>
+                      <div style={{ fontSize: "13px", color: fav.color, fontWeight: 700 }}>aka "{fav.nickname}"</div>
+                      <div style={{ fontSize: "12px", color: "#B2BEC3", marginTop: "2px" }}>Tap to view ›</div>
+                    </div>
+                  </div>
+                  <button onClick={e => { e.stopPropagation(); toggleFavorite(fav); }} style={{ background: "none", border: "none", fontSize: "22px", cursor: "pointer", padding: "4px" }}>❤️</button>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<AnimalExplorer />);
+  </script>
+</body>
+</html>
