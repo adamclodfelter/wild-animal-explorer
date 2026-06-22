@@ -735,40 +735,36 @@ function AnimalExplorer() {
         return BAD_KEYWORDS.some(k => t.includes(k));
       }
 
-      // Search Wikimedia Commons for photos of this animal
-      const searchRes = await fetch(
-        `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrsearch=${encodeURIComponent(animalName + " animal photo")}&gsrlimit=20&prop=imageinfo&iiprop=url|size|mime&iiurlwidth=640&format=json&origin=*`
+      // Step 1: get main Wikipedia image
+      const summaryRes = await fetch(
+        `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(animalName)}`
       );
-      const searchData = await searchRes.json();
-      const pages = Object.values(searchData?.query?.pages || {});
-      
-      const imgs = pages
-        .filter(p => {
-          const info = p.imageinfo?.[0];
-          if (!info) return false;
-          const mime = info.mime || "";
-          if (!mime.startsWith("image/jpeg") && !mime.startsWith("image/png")) return false;
-          if (isBadImage(p.title)) return false;
-          const w = info.width || 0;
-          const h = info.height || 0;
-          if (w < 200 || h < 200) return false;
-          // prefer landscape or square-ish photos
-          if (h > w * 2) return false;
+      const summaryData = await summaryRes.json();
+      const mainImg = summaryData?.originalimage?.source || summaryData?.thumbnail?.source || null;
+
+      // Step 2: get additional images from Wikipedia media list, strictly filtered
+      const mediaRes = await fetch(
+        `https://en.wikipedia.org/api/rest_v1/page/media-list/${encodeURIComponent(animalName)}`
+      );
+      const mediaData = await mediaRes.json();
+      const extras = (mediaData?.items || [])
+        .filter(item => {
+          if (item.type !== "image") return false;
+          if (!item.srcset || item.srcset.length === 0) return false;
+          if (isBadImage(item.title)) return false;
+          // Must be a photo not an illustration/diagram - check file extension
+          const title = (item.title || "").toLowerCase();
+          if (!title.endsWith(".jpg") && !title.endsWith(".jpeg") && !title.endsWith(".png")) return false;
           return true;
         })
-        .map(p => p.imageinfo[0].thumburl || p.imageinfo[0].url)
+        .map(item => {
+          const best = item.srcset.sort((a,b) => (b.width||0)-(a.width||0))[0];
+          return best ? "https:" + best.src : null;
+        })
         .filter(Boolean)
-        .slice(0, 3);
+        .filter(url => url !== mainImg);
 
-      // Fallback to Wikipedia summary if Commons returns nothing
-      if (imgs.length === 0) {
-        const res = await fetch(
-          `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(animalName)}`
-        );
-        const data = await res.json();
-        const mainImg = data?.originalimage?.source || data?.thumbnail?.source || null;
-        if (mainImg) imgs.push(mainImg);
-      }
+      const imgs = mainImg ? [mainImg, ...extras].slice(0, 3) : extras.slice(0, 3);
 
       setAnimalImages(imgs);
     } catch(e) {
