@@ -319,16 +319,6 @@ const ANIMALS = [
     sound: "Soft growling sounds — surprisingly cute! 🥰",
   },
   {
-    name: "Olm", emoji: "🦎", color: "#A29BFE", nickname: "the cave dragon",
-    mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=43.5,16.5&zoom=7&size=400x200&maptype=mapnik",
-    image: "",
-    superPower: "It can go 10 years without eating any food at all — the ultimate fasting champion! 🏆",
-    funFacts: ["Olms live in total darkness their whole lives and can survive for 100 years!", "Olms were once thought to be baby dragons by people who found them washed out of caves! 🐉", "An olm can go 10 years without eating a single thing and still survive! ⏳"],
-    whereItLives: "Underground caves in southern Europe 🏔️",
-    whatItEats: "Tiny crabs and snails when it can find them 🦀",
-    sound: "Completely silent — a true cave ghost 👻",
-  },
-  {
     name: "Tibetan Fox", emoji: "🦊", color: "#FD79A8", nickname: "the judgy face fox",
     mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=32.0,90.0&zoom=5&size=400x200&maptype=mapnik",
     image: "",
@@ -557,7 +547,7 @@ const ANIMALS = [
   {
     name: "Ribbon Eel", emoji: "🌊", color: "#7B1FA2", nickname: "the rainbow sea snake",
     image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=5,120&zoom=5&size=400x200&maptype=mapnik",
-    superPower: "It can change sex — all ribbon eels are born male, then turn female as they get older! 🌈",
+    superPower: "It can change its entire body color as it grows — from jet black as a baby, to electric blue and yellow as an adult, like a living mood ring! 🌈",
     funFacts: ["Young ribbon eels are jet black, then turn bright blue and yellow as they grow up!", "All ribbon eels are born male — they only become female when they're fully grown! 🌈", "Ribbon eels can grow up to 4 feet long despite being as thin as a ribbon! 📏"],
     whereItLives: "Coral reefs of the Indo-Pacific ocean 🪸",
     whatItEats: "Small fish it ambushes from its burrow 🐟",
@@ -618,15 +608,6 @@ const ANIMALS = [
     sound: "Loud chirping, whimpering, and barking 🐕",
   },
   {
-    name: "Hagfish", emoji: "🐍", color: "#607D8B", nickname: "the slime monster",
-    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=50,-30&zoom=3&size=400x200&maptype=mapnik",
-    superPower: "When attacked it releases a bucketful of thick slime that clogs predators' gills in seconds! 🤢",
-    funFacts: ["Hagfish can tie themselves in a knot and slide the knot down their body to scrape off their own slime!", "Hagfish have no jaw — they have two pairs of tooth-like plates they use to grab food! 🦷", "Their slime expands to 10,000 times its original size when it hits water — instantly! 💧"],
-    whereItLives: "Cold deep oceans around the world 🌊",
-    whatItEats: "Dead animals it burrows inside and eats from within 💀",
-    sound: "Silent slime machine 🤫",
-  },
-  {
     name: "Kinkajou", emoji: "🐒", color: "#FF8F00", nickname: "the honey bear monkey",
     image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=8,-77&zoom=5&size=400x200&maptype=mapnik",
     superPower: "Its tail is fully prehensile — it can hang from it while using both hands to eat! 🌀",
@@ -634,15 +615,6 @@ const ANIMALS = [
     whereItLives: "Tropical rainforests of Central and South America 🌴",
     whatItEats: "Fruit, nectar, and honey 🍯",
     sound: "Screams, barks, and high-pitched squeaks at night 🌙",
-  },
-  {
-    name: "Geoduck", emoji: "🐚", color: "#26A69A", nickname: "the giant neck clam",
-    image: "", mapUrl: "https://staticmap.openstreetmap.de/staticmap.php?center=48,-123&zoom=5&size=400x200&maptype=mapnik",
-    superPower: "It can live for over 150 years — one of the longest living animals on the planet! ⏳",
-    funFacts: ["A geoduck's neck can stretch to 3 feet long — way longer than its shell!", "Geoducks can live for over 150 years — some alive today were born before your great-grandparents! ⏳", "The oldest known geoduck was 168 years old — found in Washington State! 🏆"],
-    whereItLives: "Pacific coast of North America buried in the sea floor 🌊",
-    whatItEats: "Tiny algae and plankton it filters from the water 🌱",
-    sound: "Squirts water when disturbed 💦",
   },
   {
     name: "Zorilla", emoji: "🦨", color: "#212121", nickname: "the world's smelliest animal",
@@ -735,6 +707,61 @@ function AnimalExplorer() {
       "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Bipalium_kewense%2C_a_Hammerhead_Worm._%2813176833085%29.jpg/640px-Bipalium_kewense%2C_a_Hammerhead_Worm._%2813176833085%29.jpg",
       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bipalium_sp._at_Dibrugarh.jpg/640px-Bipalium_sp._at_Dibrugarh.jpg",
     ],
+    "Axolotl": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ambystoma_mexicanum.jpg/640px-Ambystoma_mexicanum.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Two-headed_Axolotl.jpg/640px-Two-headed_Axolotl.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Axolotl_ganz.jpg/640px-Axolotl_ganz.jpg",
+    ],
+    "Sailfish": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Sailfish_and_snorkeler.jpg/640px-Sailfish_and_snorkeler.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Istiophorus_albicans2.jpg/640px-Istiophorus_albicans2.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Sailfish_jumping.jpg/640px-Sailfish_jumping.jpg",
+    ],
+    "Okapi": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Okapi2.jpg/640px-Okapi2.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Okapia_johnstoni_-_Kaeng_Krachan.jpg/640px-Okapia_johnstoni_-_Kaeng_Krachan.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Okapi2009.jpg/640px-Okapi2009.jpg",
+    ],
+    "Platypus": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Platypus.jpg/640px-Platypus.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Duckbilled_Platypus.jpg/640px-Duckbilled_Platypus.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Platypus_in_Geelong.jpg/640px-Platypus_in_Geelong.jpg",
+    ],
+    "Vampire Squid": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Vampyroteuthis_infernalis.jpg/640px-Vampyroteuthis_infernalis.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Vampyroteuthis_infernalis2.jpg/640px-Vampyroteuthis_infernalis2.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Vampire_squid_MBARI.jpg/640px-Vampire_squid_MBARI.jpg",
+    ],
+    "Pika": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Ochotona_princeps.jpg/640px-Ochotona_princeps.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/American_Pika.jpg/640px-American_Pika.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Ochotona_princeps_-_hay_pile.jpg/640px-Ochotona_princeps_-_hay_pile.jpg",
+    ],
+    "Shoebill Stork": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Shoebill_Stork_2_%286963068155%29.jpg/640px-Shoebill_Stork_2_%286963068155%29.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Balaeniceps_rex_-Ueno_Zoo%2C_Tokyo%2C_Japan-8.jpg/640px-Balaeniceps_rex_-Ueno_Zoo%2C_Tokyo%2C_Japan-8.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Shoebill_%28Balaeniceps_rex%29_2.jpg/640px-Shoebill_%28Balaeniceps_rex%29_2.jpg",
+    ],
+    "Narwhal": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Narwhal_pod.jpg/640px-Narwhal_pod.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Narwhals_breach.jpg/640px-Narwhals_breach.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Narwhal_tusk.jpg/640px-Narwhal_tusk.jpg",
+    ],
+    "Yeti Crab": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Kiwa_hirsuta.jpg/640px-Kiwa_hirsuta.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Yeti_crab_Kiwa_tyleri.jpg/640px-Yeti_crab_Kiwa_tyleri.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Kiwa_puravida.jpg/640px-Kiwa_puravida.jpg",
+    ],
+    "Sunfish": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Mola_mola_2.jpg/640px-Mola_mola_2.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Mola_mola_ocean_sunfish_Monterey_Bay_Aquarium_2.jpg/640px-Mola_mola_ocean_sunfish_Monterey_Bay_Aquarium_2.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/GFNMS_--_Mola_Mola_%2835221024103%29.jpg/640px-GFNMS_--_Mola_Mola_%2835221024103%29.jpg",
+    ],
+    "Pangolin": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Pangolin_Hardap.jpg/640px-Pangolin_Hardap.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Pangolin_2_%28Manis_tricuspis%29.jpg/640px-Pangolin_2_%28Manis_tricuspis%29.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Manis_crassicaudata_-_Ranthambhore.jpg/640px-Manis_crassicaudata_-_Ranthambhore.jpg",
+    ],
   };
 
   async function fetchWikipediaImages(animalName) {
@@ -748,7 +775,7 @@ function AnimalExplorer() {
       setAnimalImages([]);
       setImageIndex(0);
 
-      const BAD_KEYWORDS = ["map", "range", "distribution", "iucn", "status", "conservation", "icon", "logo", "flag", "diagram", "chart", "graph", "taxonomy", "cladogram", "silhouette", "symbol", "sign", "button", "stamp", "coin", "extinct", "threatened", "skull", "skeleton", "fossil", "museum"];
+      const BAD_KEYWORDS = ["map", "range", "distribution", "iucn", "status", "conservation", "icon", "logo", "flag", "diagram", "chart", "graph", "taxonomy", "cladogram", "silhouette", "symbol", "sign", "button", "stamp", "coin", "extinct", "threatened", "skull", "skeleton", "fossil", "museum", "illustration", "drawing", "hand"];
 
       function isBadImage(title) {
         if (!title) return false;
