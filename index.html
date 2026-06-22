@@ -730,7 +730,19 @@ function AnimalExplorer() {
     });
   }
 
+  const IMAGE_OVERRIDES = {
+    "Hammerhead Worm": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Bipalium_kewense%2C_a_Hammerhead_Worm._%2813176833085%29.jpg/640px-Bipalium_kewense%2C_a_Hammerhead_Worm._%2813176833085%29.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bipalium_sp._at_Dibrugarh.jpg/640px-Bipalium_sp._at_Dibrugarh.jpg",
+    ],
+  };
+
   async function fetchWikipediaImages(animalName) {
+    // Check hardcoded overrides first
+    if (IMAGE_OVERRIDES[animalName]) {
+      setAnimalImages(IMAGE_OVERRIDES[animalName]);
+      return;
+    }
     try {
       setImageLoading(true);
       setAnimalImages([]);
