@@ -796,7 +796,7 @@ function AnimalExplorer() {
                     <div style={{ fontSize: "48px", animation: "spin 1s linear infinite" }}>🌀</div>
                   )}
                   {!imageLoading && animalImage && (
-                    <img src={animalImage} alt={animal.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={() => setAnimalImage(null)} />
+                    <img src={animalImage} alt={animal.name} style={{ width: "100%", height: "100%", objectFit: "contain", background: animal.color + "18" }} onError={() => setAnimalImage(null)} />
                   )}
                   {!imageLoading && !animalImage && (
                     <div style={{ fontSize: "80px" }}>{animal.emoji}</div>
