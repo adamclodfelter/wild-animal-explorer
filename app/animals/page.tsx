@@ -20,7 +20,7 @@ const ANIMALS = [
   { name: "Dumbo Octopus", emoji: "🐙", color: "#FDCB6E", nickname: "the deep sea flapper" },
 ];
 
-function slugify(name) {
+function slugify(name: string) {
   return name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 }
 
