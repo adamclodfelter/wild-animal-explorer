@@ -91,7 +91,7 @@ function slugify(name: string) {
 }
 
 export default function AnimalPage({ params }: { params: any }) {
-  const { slug } = use(params);
+  const { slug } = use(params) as { slug: string };
   const animal = ANIMALS.find(a => slugify(a.name) === slug);
 
   if (!animal) {
