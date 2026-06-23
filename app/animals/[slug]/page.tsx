@@ -86,7 +86,7 @@ const ANIMALS = [
   },
 ];
 
-function slugify(name) {
+function slugify(name: string) {
   return name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 }
 
