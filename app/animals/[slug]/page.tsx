@@ -90,7 +90,7 @@ function slugify(name: string) {
   return name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 }
 
-export default function AnimalPage({ params }) {
+export default function AnimalPage({ params }: { params: any }) {
   const { slug } = use(params);
   const animal = ANIMALS.find(a => slugify(a.name) === slug);
 
