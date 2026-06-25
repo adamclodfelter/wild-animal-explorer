@@ -23,97 +23,28 @@ function AnimalGallery({ query, color, animalName }: { query: string; color: str
   const [errored, setErrored] = useState(false);
   const [flagged, setFlagged] = useState(false);
 
-  const BAD_URL_KEYWORDS = [
-    "map", "range", "diagram", "distribution", "flag", "logo",
-    "icon", "thumb", "skull", "skeleton", "chart", "graph",
-    "silhouette", "clipart", "illustration", "drawing", "svg"
-  ];
-
-  const isGoodUrl = (url: string) => {
-    const lower = url.toLowerCase();
-    return !BAD_URL_KEYWORDS.some(k => lower.includes(k));
-  };
-
   useEffect(() => {
     async function fetchImages() {
-      const found: { url: string; credit: string }[] = [];
-
       try {
-        const inatRes = await fetch(
-          `https://api.inaturalist.org/v1/taxa/autocomplete?q=${encodeURIComponent(query)}&per_page=3`
-        );
-        const inatData = await inatRes.json();
-        for (const taxon of (inatData?.results || []).slice(0, 3)) {
-          if (taxon?.default_photo?.medium_url) {
-            const url = taxon.default_photo.medium_url;
-            if (isGoodUrl(url) && !found.find(f => f.url === url)) {
-              found.push({ url, credit: taxon.default_photo.attribution || "© iNaturalist" });
-            }
+        const res = await fetch(
+          `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=8&orientation=landscape`,
+          {
+            headers: {
+              Authorization: "Client-ID 8h_-JU-VsjZC2oL0rw5Rb9X_qQIbU1kxuahd1-YS3FA",
+            },
           }
-          for (const p of (taxon?.taxon_photos || []).slice(0, 4)) {
-            const url = p?.photo?.medium_url;
-            if (url && isGoodUrl(url) && !found.find(f => f.url === url)) {
-              found.push({ url, credit: p?.photo?.attribution || "© iNaturalist" });
-            }
-          }
-        }
-      } catch {}
-
-      try {
-        const wikiRes = await fetch(
-          `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(query)}&prop=pageimages&pithumbsize=1000&pilimit=3&format=json&origin=*`
         );
-        const wikiData = await wikiRes.json();
-        const pages = wikiData?.query?.pages;
-        if (pages) {
-          Object.values(pages).forEach((page: any) => {
-            const url = (page as any)?.thumbnail?.source;
-            if (url && isGoodUrl(url) && !found.find(f => f.url === url)) {
-              found.push({ url, credit: "© Wikipedia" });
-            }
-          });
+        const data = await res.json();
+        const results = (data.results || []).map((photo: any) => ({
+          url: photo.urls.regular,
+          credit: `© ${photo.user.name} on Unsplash`,
+        }));
+        if (results.length > 0) {
+          setImages(results);
+        } else {
+          setErrored(true);
         }
-      } catch {}
-
-      try {
-        const wikiImgRes = await fetch(
-          `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(query)}&prop=images&imlimit=20&format=json&origin=*`
-        );
-        const wikiImgData = await wikiImgRes.json();
-        const pages = wikiImgData?.query?.pages;
-        if (pages) {
-          const imgTitles: string[] = [];
-          Object.values(pages).forEach((page: any) => {
-            (page?.images || []).forEach((img: any) => {
-              if (img?.title && isGoodUrl(img.title)) {
-                imgTitles.push(img.title);
-              }
-            });
-          });
-
-          if (imgTitles.length > 0) {
-            const titles = imgTitles.slice(0, 6).join("|");
-            const infoRes = await fetch(
-              `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(titles)}&prop=imageinfo&iiprop=url|mime&format=json&origin=*`
-            );
-            const infoData = await infoRes.json();
-            const infoPages = infoData?.query?.pages;
-            if (infoPages) {
-              Object.values(infoPages).forEach((page: any) => {
-                const url = page?.imageinfo?.[0]?.url;
-                const mime = page?.imageinfo?.[0]?.mime;
-                if (url && mime?.startsWith("image/") && !mime.includes("svg") && isGoodUrl(url) && !found.find(f => f.url === url)) {
-                  found.push({ url, credit: "© Wikimedia Commons" });
-                }
-              });
-            }
-          }
-        }
-      } catch {}
-
-      if (found.length > 0) {
-        setImages(found);
-      } else {
+      } catch {
         setErrored(true);
       }
     }

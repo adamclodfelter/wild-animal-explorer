@@ -8,6 +8,7 @@ export default function Home() {
     { name: "Space", emoji: "🚀", color: "#6C5CE7", slug: "space" },
     { name: "Vehicles", emoji: "🚜", color: "#BADC58", slug: "vehicles" },
     { name: "Animal Quiz", emoji: "🧠", color: "#6C5CE7", slug: "quiz" },
+    { name: "Memory Match", emoji: "🧠", color: "#00B894", slug: "memory-match" },
   ];
 
   return (
