@@ -15,9 +15,7 @@ export const metadata: Metadata = {
   description: "Explore the wonders of God's creation — animals, dinosaurs, space and more. A free Christian homeschool learning app for kids.",
   keywords: ["Christian homeschool", "kids animals", "creation science", "educational app for kids", "homeschool science", "animal facts for kids"],
   verification: {
-    verification: {
     google: "DaZRSVTBLEcE94WJxKc4eu8UUsZaX1qGDIO9-byvwwQ",
-  },
   },
   openGraph: {
     title: "Kallos Cosmos",
