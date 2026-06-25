@@ -6,9 +6,11 @@ export default function Home() {
   const categories = [
     { name: "Animals", emoji: "🐾", color: "#FF6B9D", slug: "animals" },
     { name: "Space", emoji: "🚀", color: "#6C5CE7", slug: "space" },
-    { name: "Vehicles", emoji: "🚜", color: "#BADC58", slug: "vehicles" },
-    { name: "Animal Quiz", emoji: "🧠", color: "#6C5CE7", slug: "quiz" },
-    { name: "Memory Match", emoji: "🧠", color: "#00B894", slug: "memory-match" },
+    { name: "Plants", emoji: "🌿", color: "#00B894", slug: "plants" },
+    { name: "Vehicles", emoji: "🚒", color: "#E17055", slug: "vehicles" },
+    { name: "Landscapes", emoji: "🏔️", color: "#FDCB6E", slug: "landscapes" },
+    { name: "Animal Quiz", emoji: "🧠", color: "#A29BFE", slug: "quiz" },
+    { name: "Memory Match", emoji: "🃏", color: "#00CEC9", slug: "memory-match" },
   ];
 
   return (
@@ -56,8 +58,8 @@ export default function Home() {
 
       <div style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-        gap: "20px", width: "100%", maxWidth: "900px", marginBottom: "48px",
+        gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+        gap: "20px", width: "100%", maxWidth: "1000px", marginBottom: "48px",
       }}>
         {categories.map((cat) => (
           <Link key={cat.slug} href={`/${cat.slug}`} style={{
@@ -83,7 +85,7 @@ export default function Home() {
       </div>
 
       <p style={{ color: "rgba(255,255,255,0.25)", fontSize: "13px", fontStyle: "italic", marginBottom: "8px" }}>More worlds coming soon 🪐</p>
-      <p style={{ color: "rgba(255,255,255,0.15)", fontSize: "12px", fontStyle: "italic" }}>- Psalm 19:1</p>
+      <p style={{ color: "rgba(255,255,255,0.15)", fontSize: "12px", fontStyle: "italic" }}>— Psalm 19:1</p>
 
       <style>{`
         @keyframes pulse {
